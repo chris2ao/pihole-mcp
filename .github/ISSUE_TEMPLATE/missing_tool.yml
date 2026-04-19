@@ -1,0 +1,46 @@
+name: Missing tool
+description: Request wrapping of a specific Pi-hole v6 API endpoint
+title: "[missing-tool]: "
+labels: ["missing-tool", "enhancement"]
+body:
+  - type: input
+    id: endpoint
+    attributes:
+      label: Pi-hole v6 API endpoint
+      description: Exact path from https://docs.pi-hole.net/api/
+      placeholder: "POST /api/lists"
+    validations:
+      required: true
+  - type: input
+    id: proposed-name
+    attributes:
+      label: Proposed tool name
+      placeholder: "add_adlist"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+      description: What operational problem does exposing this endpoint solve?
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Which module does this belong in?
+      options:
+        - stats
+        - queries
+        - blocking
+        - domains
+        - local_dns
+        - maintenance
+        - new module (describe below)
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Implementation notes
+      description: Params, response shape, gotchas from the Pi-hole docs.

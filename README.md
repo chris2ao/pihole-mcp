@@ -1,4 +1,10 @@
-# chris2ao-pihole-mcp
+# pihole-mcp
+
+[![test](https://github.com/chris2ao/pihole-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/chris2ao/pihole-mcp/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+[![MCP](https://img.shields.io/badge/MCP-compatible-6E56CF.svg)](https://modelcontextprotocol.io/)
+[![Pi-hole v6](https://img.shields.io/badge/Pi--hole-v6-96060C.svg)](https://docs.pi-hole.net/)
 
 Unified Pi-hole v6 MCP server. Consolidates the useful tools from three upstream MCPs (`aplaceforallmystuff/mcp-pihole`, `sbarbett/pihole-mcp-server`, `cwdcwd/mcp-server-pihole`) into one Python server that matches the `chris2ao-unifi-mcp` stack (FastMCP + httpx + Pydantic v2).
 
