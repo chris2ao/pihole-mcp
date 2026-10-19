@@ -60,14 +60,14 @@ class PiholeClient:
         assert self._sid
         return self._sid
 
-    async def request(
+    async def _send(
         self,
         method: str,
         path: str,
         *,
         params: dict[str, Any] | None = None,
         json: Any | None = None,
-    ) -> Any:
+    ) -> httpx.Response:
         """Issue a request, auto-authenticating and retrying once on 401."""
         sid = await self._ensure_session()
         resp = await self._http.request(
@@ -93,18 +93,49 @@ class PiholeClient:
             except ValueError:
                 body = resp.text
             raise PiholeAPIError(resp.status_code, f"{method} {path} failed", body)
+        return resp
+
+    async def request(
+        self,
+        method: str,
+        path: str,
+        *,
+        params: dict[str, Any] | None = None,
+        json: Any | None = None,
+    ) -> Any:
+        """Issue a request and decode the body.
+
+        Empty bodies (e.g. 204 on DELETE) come back as {"success": True}; non-JSON bodies as {"text": ...}.
+        """
+        resp = await self._send(method, path, params=params, json=json)
         if resp.status_code == 204 or not resp.content:
-            return None
+            return {"success": True}
+        if "json" not in resp.headers.get("content-type", "json"):
+            return {"text": resp.text}
         return resp.json()
+
+    async def get_bytes(self, path: str, *, params: dict[str, Any] | None = None) -> bytes:
+        """GET a binary resource (e.g. the Teleporter zip)."""
+        resp = await self._send("GET", path, params=params)
+        return resp.content
 
     async def get(self, path: str, *, params: dict[str, Any] | None = None) -> Any:
         return await self.request("GET", path, params=params)
 
-    async def post(self, path: str, *, json: Any | None = None) -> Any:
-        return await self.request("POST", path, json=json)
+    async def post(
+        self, path: str, *, json: Any | None = None, params: dict[str, Any] | None = None
+    ) -> Any:
+        return await self.request("POST", path, json=json, params=params)
 
-    async def patch(self, path: str, *, json: Any | None = None) -> Any:
-        return await self.request("PATCH", path, json=json)
+    async def put(
+        self, path: str, *, json: Any | None = None, params: dict[str, Any] | None = None
+    ) -> Any:
+        return await self.request("PUT", path, json=json, params=params)
 
-    async def delete(self, path: str) -> Any:
-        return await self.request("DELETE", path)
+    async def patch(
+        self, path: str, *, json: Any | None = None, params: dict[str, Any] | None = None
+    ) -> Any:
+        return await self.request("PATCH", path, json=json, params=params)
+
+    async def delete(self, path: str, *, params: dict[str, Any] | None = None) -> Any:
+        return await self.request("DELETE", path, params=params)

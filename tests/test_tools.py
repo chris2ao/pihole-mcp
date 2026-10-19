@@ -16,11 +16,11 @@ def cfg(monkeypatch):
 
 
 @respx.mock
-async def test_register_all_counts_28(cfg):
+async def test_register_all_counts_72(cfg):
     mcp = FastMCP("test")
     client = PiholeClient(cfg)
     count = register_all(mcp, client)
-    assert count == 28
+    assert count == 72
     await client.close()
 
 

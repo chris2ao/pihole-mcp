@@ -37,6 +37,6 @@ jobs:
         run: |
           uv run python -c "
           from pihole_mcp.server import _tool_count
-          assert _tool_count == 28, f'Expected 28 tools, got {_tool_count}'
+          assert _tool_count == 72, f'Expected 72 tools, got {_tool_count}'
           print(f'Registered {_tool_count} tools.')
           "
