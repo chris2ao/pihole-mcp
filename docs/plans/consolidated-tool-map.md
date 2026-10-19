@@ -1,5 +1,7 @@
 # Consolidated Pi-hole MCP: Tool Map
 
+> Historical design doc for the original 28-tool surface. The README is current as of v1.1.0 (72 tools plus server_info).
+
 Superset of tools from three upstream Pi-hole MCP servers, mapped to Pi-hole v6 REST API.
 
 ## Upstream Sources
